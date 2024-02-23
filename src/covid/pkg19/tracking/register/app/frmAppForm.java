@@ -1,0 +1,552 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package covid.pkg19.tracking.register.app;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import javax.swing.JOptionPane;
+/**
+ *
+ * @author HP 250
+ */
+public class frmAppForm extends javax.swing.JFrame {
+
+    /**
+     * Creates new form frmAppForm
+     */
+    public frmAppForm() {
+        initComponents();
+    }
+    Boolean boolRecordExists=false;
+    Boolean boolEdit=false;
+    Boolean boolCreate=false;
+    
+    String strUserName;
+    String strUserSurname;
+    int intContact_Number;
+    int intAge;
+    String strAddress;
+    String strEmailAddress;
+    int intTemperature;
+    int intUserID;
+    String strCovid_Symptons;
+    String strExposed_to_anyone_with_covid;
+       
+    
+    private void mGetValuesFromGUI()
+    {
+        strUserName=txtName.getText();
+        strUserSurname=txtSurname.getText();
+        intContact_Number=Integer.parseInt(txtContactNumber.getText());
+        intAge=Integer.parseInt(txtAge.getText());
+        strAddress=txtAddress.getText();
+        strEmailAddress=txtEmailAddress.getText();
+        intTemperature=Integer.parseInt(txtTemperature.getText()); 
+             
+    }
+    private void mSetValuesToUpperCase()
+    {
+        strUserName=strUserName.toUpperCase();
+        strUserSurname=strUserSurname.toUpperCase();
+        strAddress=strAddress.toUpperCase();
+        strEmailAddress=strEmailAddress.toUpperCase();
+        strCovid_Symptons=strCovid_Symptons.toUpperCase();
+        strExposed_to_anyone_with_covid=strExposed_to_anyone_with_covid.toUpperCase();
+    }  
+     private void mClearTextFields()
+    {
+        txtName.setText("");
+        txtSurname.setText("");
+        txtContactNumber.setText("");
+        txtAge.setText("");
+        txtAddress.setText("");
+        txtEmailAddress.setText("");
+        txtTemperature.setText("");
+        rbYes.setSelected(false);
+        rbNo.setSelected(false);
+        rbYes1.setSelected(false);
+        rbNo2.setSelected(false);
+        
+    } 
+    private void mcheckIfItemsExistInTable()
+    {
+        String strDBConnectionString ="jdbc:mysql://localhost:3306/tracking_register";
+        String strDBUser ="root";
+        String strDBPassword="Password";
+        java.sql.Connection conMySQLConnectionString;
+        Statement stStatement=null;
+        ResultSet rs=null;
+        try
+        {
+            conMySQLConnectionString = DriverManager.getConnection(strDBConnectionString,strDBUser,strDBPassword);
+            stStatement = conMySQLConnectionString.createStatement();
+            String strQuery ="Select*from event_participants where UserName='" +
+                    strUserName+"'and UserSurname='"+strUserSurname+"' and Contact_Number='"+ intContact_Number+"'and Age='"+ intAge+"'and Address='"+ strAddress+
+                    "'and EmailAddress='"+strEmailAddress+"' and Temperature='"+ intTemperature+"'and Covid_symptons='"+strCovid_Symptons+"'and Exposed_to_anyone_with_covid='"+strExposed_to_anyone_with_covid+"'";
+            stStatement.execute(strQuery);
+            rs=stStatement.getResultSet();
+            boolRecordExists=rs.next();
+        }
+        catch (Exception e)
+        {
+            JOptionPane.showMessageDialog(null, e); 
+            
+        }   
+        finally
+        {
+        try
+        {
+            stStatement.close();
+        }
+        catch (Exception e)
+        {
+            JOptionPane.showMessageDialog(null,"Connection String not closed"+" "+ e);
+        }    
+        }    
+    }
+     private void mCreateUser()
+    {
+        java.sql.Connection conMySQLConnectionString = null;
+        String URL="jdbc:mysql://localhost:3306/tracking_register";
+        String User="root";
+        String Password="Password";
+        try
+        {
+            conMySQLConnectionString = DriverManager.getConnection(URL,User,Password);
+            Statement myStatement = conMySQLConnectionString.createStatement();
+            String sqlinsert= "insert into event_participants" + "(UserName,UserSurname,Contact_Number,Age,Address,EmailAddress,Temperature,Covid_Symptons,Exposed_to_anyone_with_covid)" + 
+                    "values('"+strUserName+"','"+strUserSurname +"','"+intContact_Number+"','"+intAge+"','"+strAddress+"','"+strEmailAddress
+                    +"','"+intTemperature+"','"+strCovid_Symptons+"','"+strExposed_to_anyone_with_covid+"')";
+            myStatement.executeUpdate(sqlinsert);
+            myStatement.close();
+            JOptionPane.showMessageDialog(null,"Complete");
+        } 
+        catch (Exception e)
+        {
+            JOptionPane.showMessageDialog(null, e);
+        }    
+    }
+    
+    
+     
+
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
+     */
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
+
+        jLabel1 = new javax.swing.JLabel();
+        lblName = new javax.swing.JLabel();
+        lblSurname = new javax.swing.JLabel();
+        lblContactNumber = new javax.swing.JLabel();
+        lblAge = new javax.swing.JLabel();
+        lblAddress = new javax.swing.JLabel();
+        lblEmailAddress = new javax.swing.JLabel();
+        lblTemperature = new javax.swing.JLabel();
+        txtName = new javax.swing.JTextField();
+        txtSurname = new javax.swing.JTextField();
+        txtContactNumber = new javax.swing.JTextField();
+        txtAge = new javax.swing.JTextField();
+        txtAddress = new javax.swing.JTextField();
+        txtEmailAddress = new javax.swing.JTextField();
+        txtTemperature = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
+        rbYes = new javax.swing.JRadioButton();
+        rbNo = new javax.swing.JRadioButton();
+        jLabel3 = new javax.swing.JLabel();
+        rbYes1 = new javax.swing.JRadioButton();
+        rbNo2 = new javax.swing.JRadioButton();
+        btnSubmit = new javax.swing.JButton();
+        btnCancel = new javax.swing.JButton();
+        btnView = new javax.swing.JButton();
+        btnClear = new javax.swing.JButton();
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 16)); // NOI18N
+        jLabel1.setText("Please wash your hands with sanitiser and complete this form when you enter the venue.");
+
+        lblName.setText("Name");
+
+        lblSurname.setText("Surname");
+
+        lblContactNumber.setText("Contact Number");
+
+        lblAge.setText("Age");
+
+        lblAddress.setText("Address (Place/Area)");
+
+        lblEmailAddress.setText("Email Address");
+
+        lblTemperature.setText("Temperature");
+
+        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jLabel2.setText("Have you had any Covid-19 symptons: Fever(over 38 degrees), dry cough or shortness of breath?");
+
+        rbYes.setText("Yes");
+        rbYes.setName(""); // NOI18N
+        rbYes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rbYesActionPerformed(evt);
+            }
+        });
+
+        rbNo.setText("No");
+        rbNo.setName(""); // NOI18N
+        rbNo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rbNoActionPerformed(evt);
+            }
+        });
+
+        jLabel3.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jLabel3.setText("Have you been exposed to anyone with Covid-19 or Someone who has symptons in the last 4 weeks?");
+
+        rbYes1.setText("Yes");
+        rbYes1.setName(""); // NOI18N
+        rbYes1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rbYes1ActionPerformed(evt);
+            }
+        });
+
+        rbNo2.setText("No");
+        rbNo2.setName(""); // NOI18N
+        rbNo2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rbNo2ActionPerformed(evt);
+            }
+        });
+
+        btnSubmit.setText("Submit");
+        btnSubmit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSubmitActionPerformed(evt);
+            }
+        });
+
+        btnCancel.setText("Cancel");
+        btnCancel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelActionPerformed(evt);
+            }
+        });
+
+        btnView.setText("View");
+        btnView.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnViewActionPerformed(evt);
+            }
+        });
+
+        btnClear.setText("Clear");
+        btnClear.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnClearActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(rbNo2)
+                    .addComponent(rbYes1)
+                    .addComponent(rbNo)
+                    .addComponent(jLabel1)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblName, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblSurname)
+                            .addComponent(lblContactNumber)
+                            .addComponent(lblAge)
+                            .addComponent(lblAddress)
+                            .addComponent(lblEmailAddress)
+                            .addComponent(lblTemperature))
+                        .addGap(24, 24, 24)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(txtName, javax.swing.GroupLayout.DEFAULT_SIZE, 125, Short.MAX_VALUE)
+                            .addComponent(txtSurname)
+                            .addComponent(txtContactNumber)
+                            .addComponent(txtAddress)
+                            .addComponent(txtEmailAddress)
+                            .addComponent(txtAge, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtTemperature, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jLabel2)
+                    .addComponent(rbYes)
+                    .addComponent(jLabel3)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(35, 35, 35)
+                        .addComponent(btnClear)
+                        .addGap(44, 44, 44)
+                        .addComponent(btnSubmit)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnView)
+                        .addGap(126, 126, 126)
+                        .addComponent(btnCancel)))
+                .addContainerGap(91, Short.MAX_VALUE))
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel1)
+                .addGap(23, 23, 23)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblName)
+                    .addComponent(txtName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblSurname)
+                    .addComponent(txtSurname, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblContactNumber)
+                    .addComponent(txtContactNumber, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblAge)
+                    .addComponent(txtAge, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(20, 20, 20)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblAddress)
+                    .addComponent(txtAddress, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblEmailAddress)
+                    .addComponent(txtEmailAddress, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblTemperature)
+                    .addComponent(txtTemperature, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(30, 30, 30)
+                .addComponent(jLabel2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(rbYes)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(rbNo)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(rbYes1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(rbNo2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 25, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnSubmit)
+                    .addComponent(btnCancel)
+                    .addComponent(btnView)
+                    .addComponent(btnClear))
+                .addContainerGap())
+        );
+
+        pack();
+    }// </editor-fold>//GEN-END:initComponents
+
+    private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
+        // TODO add your handling code here:
+        frmMain frmMain = new frmMain();
+        frmMain.setVisible(true);
+        this.setVisible(false);
+    }//GEN-LAST:event_btnCancelActionPerformed
+
+    private void btnSubmitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSubmitActionPerformed
+        // TODO add your handling code here:     
+        
+        if(txtName.getText().equals(""))
+        {
+            JOptionPane.showMessageDialog(null, "The field cannot be left empty");
+            txtName.requestFocusInWindow();
+            
+        }  
+        else if(txtSurname.getText().equals(""))
+        {
+            JOptionPane.showMessageDialog(null, "The field cannot be left empty");
+            txtSurname.requestFocusInWindow();
+        }
+        else if(txtContactNumber.getText().equals(""))
+        {
+            JOptionPane.showMessageDialog(null, "The field cannot be left empty");
+            txtContactNumber.requestFocusInWindow();
+        }
+        else if(txtAge.getText().equals(""))
+        {
+            JOptionPane.showMessageDialog(null, "The field cannot be left empty");
+            txtAge.requestFocusInWindow();
+        }   
+        else if(txtAddress.getText().equals(""))
+        {
+            JOptionPane.showMessageDialog(null, "The field cannot be left empty");
+            txtAddress.requestFocusInWindow();
+        }
+        else if(txtEmailAddress.getText().equals(""))
+        {
+            JOptionPane.showMessageDialog(null, "The field cannot be left empty");
+            txtEmailAddress.requestFocusInWindow();
+        }
+        else if(txtTemperature.getText().equals(""))
+        {
+            JOptionPane.showMessageDialog(null, "The field cannot be left empty");
+            txtTemperature.requestFocusInWindow();
+        }    
+        else
+        {
+            mGetValuesFromGUI();
+            mSetValuesToUpperCase();
+            mcheckIfItemsExistInTable();
+        if(boolRecordExists==true)
+        {
+            boolRecordExists=false;
+            JOptionPane.showMessageDialog(null, "User already Exists");
+        }    
+        else if(boolRecordExists==false)    
+        {
+            mCreateUser();
+           
+        }       
+        }    
+    }//GEN-LAST:event_btnSubmitActionPerformed
+
+    private void btnViewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnViewActionPerformed
+        // TODO add your handling code here:
+        frmCRUD frmCRUD = new frmCRUD();
+        frmCRUD.setVisible(true);
+        this.setVisible(false);
+    }//GEN-LAST:event_btnViewActionPerformed
+
+    private void rbYesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbYesActionPerformed
+        // TODO add your handling code here:
+        if(rbYes.isSelected())
+        {
+            strCovid_Symptons ="Yes";
+            rbNo.setSelected(false);
+        }
+        else if (rbNo.isSelected())
+        {
+            strCovid_Symptons="No";
+            rbYes.setSelected(false);
+        }
+    }//GEN-LAST:event_rbYesActionPerformed
+
+    private void rbNoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbNoActionPerformed
+        // TODO add your handling code here:
+         if(rbNo.isSelected())
+        {
+            strCovid_Symptons="No";
+            rbYes.setSelected(false);
+        }
+        else if (rbYes.isSelected())
+        {
+            strCovid_Symptons ="Yes";
+            rbNo.setSelected(false);
+        }
+        
+    }//GEN-LAST:event_rbNoActionPerformed
+
+    private void rbYes1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbYes1ActionPerformed
+        // TODO add your handling code here:
+        if(rbYes1.isSelected())
+        {
+            strExposed_to_anyone_with_covid ="Yes";
+            rbNo2.setSelected(false);
+        }
+        else if (rbNo2.isSelected())
+        {
+            strExposed_to_anyone_with_covid="No";
+            rbYes1.setSelected(false);
+        }
+    }//GEN-LAST:event_rbYes1ActionPerformed
+
+    private void rbNo2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbNo2ActionPerformed
+        // TODO add your handling code here:
+        if(rbNo2.isSelected())
+        {
+            strExposed_to_anyone_with_covid="No";
+            rbYes1.setSelected(false);
+        }
+        else if (rbYes1.isSelected())
+        {
+            strExposed_to_anyone_with_covid="Yes";
+            rbNo2.setSelected(false);
+        }
+              
+    }//GEN-LAST:event_rbNo2ActionPerformed
+
+    private void btnClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearActionPerformed
+        // TODO add your handling code here:
+        mClearTextFields();
+    }//GEN-LAST:event_btnClearActionPerformed
+
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String args[]) {
+        /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(frmAppForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(frmAppForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(frmAppForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(frmAppForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
+
+        /* Create and display the form */
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new frmAppForm().setVisible(true);
+            }
+        });
+    }
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnCancel;
+    private javax.swing.JButton btnClear;
+    private javax.swing.JButton btnSubmit;
+    private javax.swing.JButton btnView;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel lblAddress;
+    private javax.swing.JLabel lblAge;
+    private javax.swing.JLabel lblContactNumber;
+    private javax.swing.JLabel lblEmailAddress;
+    private javax.swing.JLabel lblName;
+    private javax.swing.JLabel lblSurname;
+    private javax.swing.JLabel lblTemperature;
+    private javax.swing.JRadioButton rbNo;
+    private javax.swing.JRadioButton rbNo2;
+    private javax.swing.JRadioButton rbYes;
+    private javax.swing.JRadioButton rbYes1;
+    private javax.swing.JTextField txtAddress;
+    private javax.swing.JTextField txtAge;
+    private javax.swing.JTextField txtContactNumber;
+    private javax.swing.JTextField txtEmailAddress;
+    private javax.swing.JTextField txtName;
+    private javax.swing.JTextField txtSurname;
+    private javax.swing.JTextField txtTemperature;
+    // End of variables declaration//GEN-END:variables
+}
